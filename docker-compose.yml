@@ -1,0 +1,31 @@
+services:
+  nginx:
+    container_name: nginx
+    build: ./nginx
+    restart: always
+    depends_on:
+      - react
+      - fastapi
+    env_file: env/.env
+    ports:
+      - 3050:80
+  react:
+    container_name: react
+    build: ./frontend
+    restart: always
+    command:
+      sh -c 'npm install react-scripts @material-ui/icons && npm start && npm audit fix'
+    env_file: env/.env
+    ports:
+      - 3000:3000
+    volumes:
+      - './frontend:/src/usr/app/frontend'
+  fastapi:
+    container_name: fastapi
+    build: ./backend
+    entrypoint: uvicorn main:app --host 0.0.0.0 --port 5000 --reload
+    env_file: env/.env
+    ports:
+      - 5000:5000
+    volumes:
+      - './backend:/src/usr/app/backend'
