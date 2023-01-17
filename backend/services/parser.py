@@ -138,6 +138,7 @@ class Parser:
     def parse(self, location_type: Location, role: str, location: str) -> int:
         """Main parse function"""
 
+        location_type = Location(location_type)
         if location_type == Location.LOCAL:
             url = self.local_url.format(role, location)
         elif location_type == Location.REMOTE:
@@ -176,6 +177,7 @@ class Parser:
                                 'class': 'styles_component__UCLp3 styles_defaultLink__eZMqw styles_logoLink__gyC8B'})[
                                                              'href'])
 
+                            self.logger.info(f'Getting {company} company')
                             additional_details = self.get_job_details(link)
                             job_data = {
                                 'company': company,

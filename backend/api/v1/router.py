@@ -16,9 +16,8 @@ def parse(values: FilterItem):
     parser = Parser()
     status_code = parser.parse(values.job_type.lower(), values.job_title.lower(), values.location.lower())
 
-    return StreamingResponse(
-        open(os.getenv('DATA_FILE')),
-        status_code=status_code,
-        media_type='text/csv',
-        headers={'Content-Disposition": f"attachment; filename=jobs.csv'},
-    )
+    def get_file():
+        with open(os.getenv('DATA_FILE'), mode='rb') as f:
+            yield from f
+
+    return StreamingResponse(get_file(), media_type='text/csv', status_code=status_code)
