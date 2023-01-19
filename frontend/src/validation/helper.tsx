@@ -11,7 +11,7 @@ export function toNull(params: Array<string>, values: any) {
 export function createCSVDownload(href: any) {
     const link = document.createElement("a");
     link.href = href;
-    link.setAttribute("download", "file.csv");
+    link.setAttribute("download", "jobs.csv");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

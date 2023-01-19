@@ -115,4 +115,5 @@ type tplotOptions = {
 export var ERRORS: tplotOptions = {
     403: "403 - Forbidden",
     404: "Error: 404 - No Found",
+    500: " Error: Parser finished with 500 code -- НЕ CODE AN ERROR!"
 }

@@ -30,23 +30,22 @@ export const Filter = () => {
     let response: any;
 
     const onSubmit = async (values: FormikValues) => {
+        setFile("loading")
         values.salary = salary;
         values.equity = equity;
-        setFile("loading")
         values.job_title = values.job_title.replace(" ", "-")
         values.location = values.location.replace(" ", "-")
-        response = await filterService.getCSV(values).catch((error: any) => {
-            if (error.response.status !== 200) {
-                const x: number = error.response.status
-                setStatus(ERRORS[x] || `Error: Parser finished with ${x} code`)
-                setFile("")
+        await filterService.getCSV(values).then(response => {
+                setStatus(response.status)
+                const href = URL.createObjectURL(response.data);
+                setFile(href);
             }
-        });
-        setStatus(response.status)
-        if (response.status === 200) {
-            const href = URL.createObjectURL(response.data);
+        ).catch((error: any) => {
+            const x: number = error.response.status
+            setStatus(ERRORS[x] || `Error: Parser finished with ${x} code`)
+            const href = URL.createObjectURL(error.response.data);
             setFile(href);
-        }
+        });
     };
 
     return (
